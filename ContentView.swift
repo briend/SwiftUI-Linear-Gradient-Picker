@@ -22,7 +22,6 @@ struct FullLinearGradientExample: View {
     
     
     var body: some View {
-        
     VStack {
         Spacer()
         LinearGradientPicker(selection: $selection, hideControls: $hideControls, start: $start, end: $end, stops: Binding(get: {
@@ -31,7 +30,9 @@ struct FullLinearGradientExample: View {
             self.stops = stops.sorted(by: { (first, second)  in
                 second.location > first.location
             })
-        })).padding(50)
+        }))
+            .padding(50)
+            .drawingGroup(opaque: false, colorMode: .linear)
         RGBColorPicker(red: $red, green: $green, blue: $blue) { (color) in
             RoundedRectangle(cornerRadius: 5).fill(color).frame(width: 300, height: 200).offset(x: 0, y: -50)
         }
