@@ -22,34 +22,50 @@ struct FullLinearGradientExample: View {
     
     
     var body: some View {
-    VStack {
-        Spacer()
-        LinearGradientPicker(selection: $selection, hideControls: $hideControls, start: $start, end: $end, stops: Binding(get: {
-            return self.stops
-        }, set: { (stops: [Gradient.Stop]) in
-            self.stops = stops.sorted(by: { (first, second)  in
-                second.location > first.location
-            })
-        }))
-            .padding(50)
-            .drawingGroup(opaque: false, colorMode: .linear)
-        RGBColorPicker(red: $red, green: $green, blue: $blue) { (color) in
-            RoundedRectangle(cornerRadius: 5).fill(color).frame(width: 300, height: 200).offset(x: 0, y: -50)
-        }
-        HStack {
-            Button("Add Stop") {
-                self.stops.append(.init(color: Color(red: self.red, green: self.green, blue: self.blue), location: 1))
+        VStack {
+
+            Text("Linear").padding(Edge.Set(Edge.top), 20)
+            LinearGradientPicker(selection: $selection, hideControls: $hideControls, start: $start, end: $end, stops: Binding(get: {
+                return self.stops
+            }, set: { (stops: [Gradient.Stop]) in
+                self.stops = stops.sorted(by: { (first, second)  in
+                    second.location > first.location
+                })
+            }))
+
+                .padding(Edge.Set(Edge.leading), 50)
+                .padding(Edge.Set(Edge.trailing), 50)
+                .drawingGroup(opaque: false, colorMode: .extendedLinear)
+
+            Text("Non-Linear").padding(Edge.Set(Edge.top), 20)
+            LinearGradientPicker(selection: $selection, hideControls: $hideControls, start: $start, end: $end, stops: Binding(get: {
+                return self.stops
+            }, set: { (stops: [Gradient.Stop]) in
+                self.stops = stops.sorted(by: { (first, second)  in
+                    second.location > first.location
+                })
+            }))
+                .padding(Edge.Set(Edge.leading), 50)
+                .padding(Edge.Set(Edge.trailing), 50)
+                .padding(Edge.Set(Edge.bottom), 50)
+                .drawingGroup(opaque: false, colorMode: .nonLinear)
+            RGBColorPicker(red: $red, green: $green, blue: $blue) { (color) in
+                RoundedRectangle(cornerRadius: 5).fill(color).frame(width: 300, height: 200).offset(x: 0, y: -50)
             }
-            Button("Delete Selected") {
-                self.stops.remove(at: self.selection!)
-            }.disabled(self.selection == nil)
+            HStack {
+                Button("Add Stop") {
+                    self.stops.append(.init(color: Color(red: self.red, green: self.green, blue: self.blue), location: 1))
+                }
+                Button("Delete Selected") {
+                    self.stops.remove(at: self.selection!)
+                }.disabled(self.selection == nil)
+            }
+            Toggle(isOn: $hideControls) { ()  in
+                Text("Hide Controls")
+            }.padding()
+            
         }
-        Toggle(isOn: $hideControls) { ()  in
-            Text("Hide Controls")
-        }.padding()
-    
-    }
-    .background(Color(red: 0.4, green: 0.45, blue: 0.45)).edgesIgnoringSafeArea(.all)
+        .background(Color(red: 0.4, green: 0.45, blue: 0.45)).edgesIgnoringSafeArea(.all)
         
         
     }
